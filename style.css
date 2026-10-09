@@ -241,7 +241,6 @@ select:focus {
   }
 }
 
-/* Split Mode Selector Tabs */
 .split-mode-container {
   margin: 1.5rem 0 1rem;
   background-color: var(--bg-subtle);
@@ -273,7 +272,6 @@ select:focus {
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
 }
 
-/* Participant Names Grid & Avatar Badges */
 .people-names-panel {
   background-color: #fafbfc;
   border: 1px solid var(--border-light);
@@ -363,7 +361,6 @@ select:focus {
   max-width: 140px;
 }
 
-/* AVATAR CIRCLES */
 .avatar-circle {
   width: 38px;
   height: 38px;
@@ -399,7 +396,6 @@ select:focus {
   flex-shrink: 0;
 }
 
-/* OVERLAPPING AVATAR SERIES (Circles rounding on each other in series) */
 .series-overview-card {
   background: var(--bg-card);
   border: 1px solid var(--border-light);
@@ -449,7 +445,7 @@ select:focus {
   text-transform: uppercase;
   border: 2.5px solid #ffffff;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
-  margin-left: -12px; /* Circles rounding/overlapping on each other in series */
+  margin-left: -12px;
   transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), z-index 0.2s ease, box-shadow 0.2s ease;
   position: relative;
   cursor: pointer;
@@ -465,7 +461,6 @@ select:focus {
   box-shadow: 0 6px 14px rgba(0, 0, 0, 0.18);
 }
 
-/* Individual Splitter Series Cards */
 .splitters-series-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -510,7 +505,6 @@ select:focus {
   color: var(--blue-primary);
 }
 
-/* Custom Share Input Wrap */
 .custom-share-input-wrap {
   margin-top: 0.45rem;
   padding-top: 0.45rem;
@@ -551,7 +545,6 @@ select:focus {
   color: var(--blue-hover);
 }
 
-/* Actions Row */
 .actions-row {
   display: flex;
   gap: 0.75rem;
@@ -609,7 +602,6 @@ button {
   border-color: var(--text-muted);
 }
 
-/* Alert / Warning message styling */
 .alert-box {
   margin-top: 1.5rem;
   padding: 0.85rem 1.15rem;
@@ -646,7 +638,6 @@ button {
   margin-top: 0.15rem;
 }
 
-/* Results section */
 .results-section {
   margin-top: 2rem;
   border-top: 1px solid var(--border-light);
@@ -801,7 +792,6 @@ button {
   text-align: center;
 }
 
-/* Post-calculation utility actions */
 .results-actions-bar {
   display: flex;
   gap: 0.75rem;
@@ -811,7 +801,6 @@ button {
   flex-wrap: wrap;
 }
 
-/* Modal for Saved Bills */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -882,7 +871,6 @@ button {
   background-color: #fafbfc;
 }
 
-/* Saved Bill Card with Avatars */
 .saved-bill-card {
   border: 1px solid var(--border-light);
   border-radius: 4px;
@@ -983,7 +971,6 @@ footer {
   display: none !important;
 }
 
-/* Printable Clean Styling */
 @media print {
   body {
     background: #ffffff;
