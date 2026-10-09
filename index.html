@@ -1,0 +1,1315 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bills Buddy</title>
+    <meta name="description" content="Bills Buddy - Your offline dinner and group bill splitter with exact penny allocation, custom shares, venue details, and avatar circles." />
+    <meta property="og:title" content="Bills Buddy" />
+    <meta property="og:description" content="Bills Buddy - Your offline dinner and group bill splitter with exact penny allocation, custom shares, venue details, and avatar circles." />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="theme-color" content="#3b6989" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="Bills Buddy" />
+    <link rel="manifest" href="/manifest.json" />
+    <style id="bills-buddy-styles">
+      :root {
+        --bg-page: #f5f7fa;
+        --bg-card: #ffffff;
+        --bg-subtle: #f0f4f8;
+        --bg-accent-soft: #eaf2f8;
+        --bg-modal-overlay: rgba(30, 41, 59, 0.45);
+        --border-light: #dbe3eb;
+        --border-strong: #cbd5e1;
+        --text-main: #1f2937;
+        --text-muted: #5c6b7d;
+        --text-light: #8896a6;
+        --blue-primary: #3b6989;
+        --blue-hover: #2e536e;
+        --blue-border: #b8d0e2;
+        --error-bg: #fff5f5;
+        --error-border: #f5c6cb;
+        --error-text: #9f2a2a;
+        --success-bg: #f4faf6;
+        --success-border: #c3e6cb;
+        --success-text: #206138;
+        --warning-bg: #fffdf5;
+        --warning-border: #fae1a5;
+        --warning-text: #8c5800;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: 'Times New Roman', Times, Georgia, Cambria, serif;
+        background-color: var(--bg-page);
+        color: var(--text-main);
+        line-height: 1.6;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        padding: 2rem 1rem 3rem;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      .container {
+        width: 100%;
+        max-width: 800px;
+        background: var(--bg-card);
+        border: 1px solid var(--border-light);
+        box-shadow: 0 4px 20px rgba(35, 55, 75, 0.05);
+        border-radius: 4px;
+        padding: 2.25rem 2.5rem;
+      }
+
+      header {
+        border-bottom: 1px solid var(--border-light);
+        padding-bottom: 1.25rem;
+        margin-bottom: 2rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        flex-wrap: wrap;
+        gap: 1rem;
+      }
+
+      .header-text {
+        flex: 1;
+      }
+
+      .header-tag-row {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        margin-bottom: 0.35rem;
+        flex-wrap: wrap;
+      }
+
+      .header-tag {
+        font-size: 0.85rem;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--blue-primary);
+        font-weight: 600;
+      }
+
+      .offline-status-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+        background-color: var(--bg-subtle);
+        border: 1px solid var(--border-light);
+        color: var(--text-muted);
+        font-size: 0.75rem;
+        padding: 0.15rem 0.55rem;
+        border-radius: 999px;
+        letter-spacing: 0.02em;
+      }
+
+      .status-dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background-color: #22c55e;
+      }
+
+      h1 {
+        font-size: 2.2rem;
+        font-weight: normal;
+        letter-spacing: -0.01em;
+        color: var(--text-main);
+        margin-bottom: 0.35rem;
+      }
+
+      .subtitle {
+        font-size: 1rem;
+        color: var(--text-muted);
+        font-style: italic;
+      }
+
+      .header-actions {
+        display: flex;
+        align-items: center;
+        gap: 0.65rem;
+        flex-wrap: wrap;
+      }
+
+      .badge {
+        display: inline-block;
+        background-color: var(--blue-primary);
+        color: #fff;
+        font-size: 0.75rem;
+        padding: 0.15rem 0.45rem;
+        border-radius: 999px;
+        margin-left: 0.35rem;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      }
+
+      .form-section-title {
+        font-size: 1.05rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: var(--blue-primary);
+        margin: 1.5rem 0 0.85rem;
+        padding-bottom: 0.35rem;
+        border-bottom: 1px solid var(--border-light);
+      }
+
+      .form-group {
+        margin-bottom: 1.25rem;
+      }
+
+      label {
+        display: block;
+        font-size: 0.95rem;
+        font-weight: 600;
+        color: var(--text-main);
+        margin-bottom: 0.35rem;
+        letter-spacing: 0.01em;
+      }
+
+      .label-hint {
+        font-weight: normal;
+        font-size: 0.85rem;
+        color: var(--text-light);
+        margin-left: 0.35rem;
+        font-style: italic;
+      }
+
+      .input-wrapper {
+        position: relative;
+        display: flex;
+        align-items: center;
+      }
+
+      .currency-prefix {
+        position: absolute;
+        left: 0.85rem;
+        color: var(--text-muted);
+        font-size: 1.05rem;
+        font-weight: 600;
+        pointer-events: none;
+      }
+
+      input[type="text"],
+      input[type="number"],
+      input[type="date"],
+      select {
+        width: 100%;
+        font-family: inherit;
+        font-size: 1rem;
+        padding: 0.65rem 0.85rem;
+        border: 1px solid var(--border-strong);
+        border-radius: 3px;
+        background-color: #fafbfc;
+        color: var(--text-main);
+        transition: border-color 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease;
+      }
+
+      input.has-prefix {
+        padding-left: 2rem;
+      }
+
+      input:focus,
+      select:focus {
+        outline: none;
+        border-color: var(--blue-primary);
+        background-color: #ffffff;
+        box-shadow: 0 0 0 3px rgba(59, 105, 137, 0.12);
+      }
+
+      .form-grid-3 {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 1rem;
+      }
+
+      .form-grid-2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+      }
+
+      @media (max-width: 640px) {
+        .container {
+          padding: 1.5rem 1.15rem;
+        }
+        .form-grid-3,
+        .form-grid-2 {
+          grid-template-columns: 1fr;
+          gap: 0.85rem;
+        }
+        header {
+          flex-direction: column;
+        }
+      }
+
+      .split-mode-container {
+        margin: 1.5rem 0 1rem;
+        background-color: var(--bg-subtle);
+        border: 1px solid var(--border-light);
+        border-radius: 4px;
+        padding: 0.35rem;
+        display: flex;
+        gap: 0.35rem;
+      }
+
+      .mode-tab-btn {
+        flex: 1;
+        border: none;
+        background: transparent;
+        padding: 0.6rem 0.8rem;
+        font-size: 0.95rem;
+        color: var(--text-muted);
+        cursor: pointer;
+        border-radius: 3px;
+        transition: all 0.15s ease;
+        font-family: inherit;
+        text-align: center;
+      }
+
+      .mode-tab-btn.active {
+        background: #ffffff;
+        color: var(--blue-primary);
+        font-weight: 600;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+      }
+
+      .people-names-panel {
+        background-color: #fafbfc;
+        border: 1px solid var(--border-light);
+        border-radius: 4px;
+        padding: 1.25rem;
+        margin-top: 1rem;
+      }
+
+      .people-names-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 0.85rem;
+      }
+
+      .people-names-title {
+        font-size: 0.95rem;
+        font-weight: 600;
+        color: var(--text-main);
+      }
+
+      .people-count-controls {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .btn-counter {
+        background-color: #ffffff;
+        border: 1px solid var(--border-strong);
+        width: 28px;
+        height: 28px;
+        border-radius: 3px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.1rem;
+        color: var(--text-main);
+        cursor: pointer;
+        padding: 0;
+      }
+
+      .btn-counter:hover {
+        background-color: var(--bg-subtle);
+      }
+
+      .people-inputs-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+        gap: 0.85rem;
+      }
+
+      .person-input-card {
+        background: #ffffff;
+        border: 1px solid var(--border-light);
+        border-radius: 4px;
+        padding: 0.75rem 0.85rem;
+        position: relative;
+      }
+
+      .person-card-top {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-bottom: 0.5rem;
+      }
+
+      .person-card-meta {
+        flex: 1;
+      }
+
+      .person-card-label {
+        font-size: 0.78rem;
+        color: var(--text-light);
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        line-height: 1.2;
+      }
+
+      .person-card-name-preview {
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: var(--text-main);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 140px;
+      }
+
+      .avatar-circle {
+        width: 38px;
+        height: 38px;
+        min-width: 38px;
+        border-radius: 50%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        font-size: 0.88rem;
+        letter-spacing: 0.02em;
+        text-transform: uppercase;
+        border: 2px solid #ffffff;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+        user-select: none;
+      }
+
+      .avatar-circle-sm {
+        width: 30px;
+        height: 30px;
+        min-width: 30px;
+        border-radius: 50%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        font-size: 0.75rem;
+        letter-spacing: 0.02em;
+        text-transform: uppercase;
+        border: 1px solid #ffffff;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+        user-select: none;
+        flex-shrink: 0;
+      }
+
+      .series-overview-card {
+        background: var(--bg-card);
+        border: 1px solid var(--border-light);
+        border-radius: 4px;
+        padding: 1.1rem 1.25rem;
+        margin-bottom: 1.5rem;
+      }
+
+      .series-overview-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 0.85rem;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+      }
+
+      .series-overview-title {
+        font-size: 0.95rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: var(--blue-primary);
+      }
+
+      .stacked-avatars-row {
+        display: flex;
+        align-items: center;
+        padding: 0.35rem 0;
+      }
+
+      .stacked-avatars-group {
+        display: flex;
+        align-items: center;
+      }
+
+      .stacked-avatar-item {
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        font-size: 0.95rem;
+        letter-spacing: 0.02em;
+        text-transform: uppercase;
+        border: 2.5px solid #ffffff;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+        margin-left: -12px;
+        transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), z-index 0.2s ease, box-shadow 0.2s ease;
+        position: relative;
+        cursor: pointer;
+      }
+
+      .stacked-avatar-item:first-child {
+        margin-left: 0;
+      }
+
+      .stacked-avatar-item:hover {
+        transform: scale(1.18) translateY(-4px);
+        z-index: 20;
+        box-shadow: 0 6px 14px rgba(0, 0, 0, 0.18);
+      }
+
+      .splitters-series-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 0.75rem;
+        margin-top: 1rem;
+      }
+
+      .splitter-series-chip {
+        display: flex;
+        align-items: center;
+        gap: 0.65rem;
+        background-color: var(--bg-subtle);
+        border: 1px solid var(--border-light);
+        border-radius: 3px;
+        padding: 0.55rem 0.75rem;
+        transition: border-color 0.15s ease, background-color 0.15s ease;
+      }
+
+      .splitter-series-chip:hover {
+        border-color: var(--blue-border);
+        background-color: #ffffff;
+      }
+
+      .splitter-chip-info {
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+      }
+
+      .splitter-chip-name {
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: var(--text-main);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .splitter-chip-amount {
+        font-size: 0.95rem;
+        font-weight: 600;
+        color: var(--blue-primary);
+      }
+
+      .custom-share-input-wrap {
+        margin-top: 0.45rem;
+        padding-top: 0.45rem;
+        border-top: 1px dashed var(--border-light);
+      }
+
+      .custom-share-input-wrap label {
+        font-size: 0.8rem;
+        font-weight: normal;
+        color: var(--text-muted);
+        margin-bottom: 0.15rem;
+      }
+
+      .custom-helper-note {
+        font-size: 0.85rem;
+        color: var(--text-muted);
+        margin-top: 0.75rem;
+        font-style: italic;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+      }
+
+      .btn-text-link {
+        background: none;
+        border: none;
+        color: var(--blue-primary);
+        text-decoration: underline;
+        cursor: pointer;
+        padding: 0;
+        font-size: 0.85rem;
+        font-family: inherit;
+      }
+
+      .btn-text-link:hover {
+        color: var(--blue-hover);
+      }
+
+      .actions-row {
+        display: flex;
+        gap: 0.75rem;
+        margin-top: 1.75rem;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+
+      button {
+        font-family: inherit;
+        font-size: 0.95rem;
+        cursor: pointer;
+        border-radius: 3px;
+        padding: 0.7rem 1.25rem;
+        transition: all 0.15s ease;
+      }
+
+      .btn-primary {
+        background-color: var(--blue-primary);
+        color: #ffffff;
+        border: 1px solid var(--blue-primary);
+        flex: 1;
+        min-width: 140px;
+        font-weight: 600;
+        letter-spacing: 0.02em;
+      }
+
+      .btn-primary:hover {
+        background-color: var(--blue-hover);
+        border-color: var(--blue-hover);
+      }
+
+      .btn-success {
+        background-color: var(--success-text);
+        color: #ffffff;
+        border: 1px solid var(--success-text);
+        font-weight: 600;
+      }
+
+      .btn-success:hover {
+        background-color: #184c2c;
+        border-color: #184c2c;
+      }
+
+      .btn-secondary {
+        background-color: transparent;
+        color: var(--text-muted);
+        border: 1px solid var(--border-strong);
+        padding: 0.7rem 1rem;
+      }
+
+      .btn-secondary:hover {
+        background-color: var(--bg-subtle);
+        color: var(--text-main);
+        border-color: var(--text-muted);
+      }
+
+      .alert-box {
+        margin-top: 1.5rem;
+        padding: 0.85rem 1.15rem;
+        border-radius: 3px;
+        font-size: 0.95rem;
+        display: flex;
+        align-items: flex-start;
+        gap: 0.65rem;
+      }
+
+      .alert-error {
+        background-color: var(--error-bg);
+        border: 1px solid var(--error-border);
+        color: var(--error-text);
+      }
+
+      .alert-warning {
+        background-color: var(--warning-bg);
+        border: 1px solid var(--warning-border);
+        color: var(--warning-text);
+      }
+
+      .alert-success {
+        background-color: var(--success-bg);
+        border: 1px solid var(--success-border);
+        color: var(--success-text);
+      }
+
+      .alert-icon {
+        font-weight: bold;
+        font-style: normal;
+        display: inline-block;
+        line-height: 1;
+        margin-top: 0.15rem;
+      }
+
+      .results-section {
+        margin-top: 2rem;
+        border-top: 1px solid var(--border-light);
+        padding-top: 1.75rem;
+      }
+
+      .results-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        margin-bottom: 0.5rem;
+        border-bottom: 1px dashed var(--border-strong);
+        padding-bottom: 0.75rem;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+      }
+
+      .results-title {
+        font-size: 1.35rem;
+        font-weight: normal;
+        color: var(--text-main);
+      }
+
+      .occasion-display-badge {
+        font-style: italic;
+        color: var(--blue-primary);
+        font-size: 1rem;
+      }
+
+      .venue-meta-tag {
+        font-size: 0.9rem;
+        color: var(--text-muted);
+        margin-bottom: 1.25rem;
+        font-style: italic;
+      }
+
+      .bill-summary-card {
+        background-color: var(--bg-accent-soft);
+        border: 1px solid var(--blue-border);
+        border-radius: 4px;
+        padding: 1.1rem 1.25rem;
+        margin-bottom: 1.5rem;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        gap: 1rem;
+      }
+
+      .summary-item {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .summary-label {
+        font-size: 0.78rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: var(--text-muted);
+      }
+
+      .summary-value {
+        font-size: 1.35rem;
+        color: var(--text-main);
+        font-weight: normal;
+      }
+
+      .shares-table-container {
+        margin-top: 1.25rem;
+      }
+
+      .table-heading {
+        font-size: 0.95rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: var(--text-muted);
+        margin-bottom: 0.65rem;
+      }
+
+      .shares-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 1rem;
+      }
+
+      .shares-table th,
+      .shares-table td {
+        padding: 0.75rem 0.65rem;
+        border-bottom: 1px solid var(--border-light);
+        text-align: left;
+      }
+
+      .shares-table th {
+        font-weight: 600;
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        color: var(--text-muted);
+        background-color: var(--bg-subtle);
+      }
+
+      .shares-table tr:last-child td {
+        border-bottom: 2px solid var(--text-main);
+      }
+
+      .shares-table .text-right {
+        text-align: right;
+      }
+
+      .person-cell-wrap {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+      }
+
+      .person-name-cell {
+        font-weight: 600;
+        color: var(--text-main);
+      }
+
+      .person-note-cell {
+        color: var(--text-muted);
+        font-size: 0.88rem;
+        font-style: italic;
+      }
+
+      .person-share-amount {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: var(--blue-primary);
+      }
+
+      .exact-verification {
+        background-color: var(--success-bg);
+        border: 1px solid var(--success-border);
+        color: var(--success-text);
+        padding: 0.85rem 1.15rem;
+        border-radius: 3px;
+        margin-top: 1.5rem;
+        font-size: 0.95rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+      }
+
+      .verification-note {
+        font-size: 0.85rem;
+        color: var(--text-muted);
+        margin-top: 0.75rem;
+        font-style: italic;
+        text-align: center;
+      }
+
+      .results-actions-bar {
+        display: flex;
+        gap: 0.75rem;
+        margin-top: 1.5rem;
+        padding-top: 1.25rem;
+        border-top: 1px dashed var(--border-light);
+        flex-wrap: wrap;
+      }
+
+      .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: var(--bg-modal-overlay);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 1rem;
+        z-index: 1000;
+        backdrop-filter: blur(2px);
+      }
+
+      .modal-content {
+        background: #ffffff;
+        width: 100%;
+        max-width: 720px;
+        max-height: 85vh;
+        border-radius: 4px;
+        border: 1px solid var(--border-light);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        display: flex;
+        flex-direction: column;
+      }
+
+      .modal-header {
+        padding: 1.25rem 1.5rem;
+        border-bottom: 1px solid var(--border-light);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .modal-title {
+        font-size: 1.35rem;
+        font-weight: normal;
+        color: var(--text-main);
+      }
+
+      .btn-close-modal {
+        background: transparent;
+        border: none;
+        font-size: 1.4rem;
+        cursor: pointer;
+        color: var(--text-muted);
+        line-height: 1;
+        padding: 0.25rem;
+      }
+
+      .btn-close-modal:hover {
+        color: var(--text-main);
+      }
+
+      .modal-body {
+        padding: 1.25rem 1.5rem;
+        overflow-y: auto;
+        flex: 1;
+      }
+
+      .modal-footer {
+        padding: 1rem 1.5rem;
+        border-top: 1px solid var(--border-light);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: #fafbfc;
+      }
+
+      .saved-bill-card {
+        border: 1px solid var(--border-light);
+        border-radius: 4px;
+        padding: 1.1rem 1.25rem;
+        margin-bottom: 1rem;
+        background: #ffffff;
+        transition: border-color 0.15s ease;
+      }
+
+      .saved-bill-card:hover {
+        border-color: var(--blue-border);
+      }
+
+      .saved-bill-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        margin-bottom: 0.35rem;
+      }
+
+      .saved-bill-title {
+        font-size: 1.15rem;
+        font-weight: 600;
+        color: var(--text-main);
+      }
+
+      .saved-bill-total {
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: var(--blue-primary);
+      }
+
+      .saved-bill-meta {
+        font-size: 0.85rem;
+        color: var(--text-muted);
+        margin-bottom: 0.75rem;
+      }
+
+      .saved-bill-stacked-avatars {
+        display: flex;
+        align-items: center;
+        margin-bottom: 0.75rem;
+      }
+
+      .saved-bill-shares {
+        font-size: 0.9rem;
+        background-color: var(--bg-subtle);
+        padding: 0.6rem 0.85rem;
+        border-radius: 3px;
+        margin-bottom: 0.85rem;
+      }
+
+      .saved-bill-share-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.3rem 0;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+      }
+
+      .saved-bill-share-row:last-child {
+        border-bottom: none;
+      }
+
+      .saved-bill-user-wrap {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .saved-bill-actions {
+        display: flex;
+        gap: 0.5rem;
+        justify-content: flex-end;
+        margin-top: 0.5rem;
+      }
+
+      .saved-bill-actions button {
+        padding: 0.4rem 0.75rem;
+        font-size: 0.85rem;
+      }
+
+      .empty-saved-message {
+        text-align: center;
+        padding: 2.5rem 1rem;
+        color: var(--text-muted);
+        font-style: italic;
+      }
+
+      footer {
+        margin-top: 2rem;
+        text-align: center;
+        font-size: 0.85rem;
+        color: var(--text-light);
+      }
+
+      .hidden {
+        display: none !important;
+      }
+
+      @media print {
+        body {
+          background: #ffffff;
+          padding: 0;
+        }
+        .container {
+          border: none;
+          box-shadow: none;
+          max-width: 100%;
+          padding: 0;
+        }
+        header .header-actions,
+        #splitter-form,
+        .results-actions-bar,
+        footer,
+        .modal-overlay {
+          display: none !important;
+        }
+        .results-section {
+          border-top: none;
+          padding-top: 0;
+          margin-top: 0;
+          display: block !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="container">
+      <header>
+        <div class="header-text">
+          <div class="header-tag-row">
+            <span class="header-tag">Dinner &amp; Group Settlement</span>
+            <div id="offline-indicator" class="offline-status-pill" title="This app works completely offline anytime">
+              <span class="status-dot"></span>
+              <span id="offline-text">Offline Ready</span>
+            </div>
+          </div>
+          <h1>Bills Buddy</h1>
+          <p class="subtitle">Your offline companion to settle up bills fast, fairly &amp; with exact shares</p>
+        </div>
+        <div class="header-actions">
+          <button type="button" id="install-app-btn" class="btn-secondary hidden" title="Install Bills Buddy to use offline anytime">
+            &#128242; Install App
+          </button>
+          <button type="button" id="open-saved-btn" class="btn-secondary" title="View previously saved bills">
+            Saved Bills <span id="saved-bills-badge" class="badge">0</span>
+          </button>
+        </div>
+      </header>
+
+      <form id="splitter-form" onsubmit="return false;">
+        <!-- Occasion & Venue Information -->
+        <h2 class="form-section-title">1. Occasion &amp; Venue Details</h2>
+        <div class="form-grid-2">
+          <div class="form-group">
+            <label for="occasion">Occasion Name</label>
+            <input
+              type="text"
+              id="occasion"
+              name="occasion"
+              placeholder="e.g., Weekend Dinner with Friends"
+              autocomplete="off"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="venue-name">Hotel / Cafe / Restaurant</label>
+            <input
+              type="text"
+              id="venue-name"
+              name="venue-name"
+              placeholder="e.g., Trattoria Mario, Blue Tokai"
+              autocomplete="off"
+            />
+          </div>
+        </div>
+
+        <div class="form-grid-2">
+          <div class="form-group">
+            <label for="occasion-type">Occasion Type</label>
+            <select id="occasion-type" name="occasion-type">
+              <option value="Dinner">Dinner</option>
+              <option value="Lunch">Lunch</option>
+              <option value="Cafe / Coffee">Cafe / Coffee</option>
+              <option value="Drinks / Bar">Drinks / Bar</option>
+              <option value="Brunch">Brunch</option>
+              <option value="Breakfast">Breakfast</option>
+              <option value="Party / Celebration">Party / Celebration</option>
+              <option value="Road Trip / Outing">Road Trip / Outing</option>
+              <option value="Hotel Stay">Hotel Stay</option>
+              <option value="Other">Other Gathering</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="occasion-date">Date</label>
+            <input type="date" id="occasion-date" name="occasion-date" />
+          </div>
+        </div>
+
+        <!-- Bill Amount & Currency -->
+        <h2 class="form-section-title">2. Bill Amount &amp; Currency</h2>
+        <div class="form-grid-3">
+          <div class="form-group">
+            <label for="currency-select">Currency</label>
+            <select id="currency-select" name="currency-select">
+              <option value="$" data-code="USD">$ USD (US Dollar)</option>
+              <option value="₹" data-code="INR">₹ INR (Indian Rupee)</option>
+              <option value="€" data-code="EUR">€ EUR (Euro)</option>
+              <option value="£" data-code="GBP">£ GBP (British Pound)</option>
+              <option value="¥" data-code="JPY">¥ JPY (Japanese Yen)</option>
+              <option value="C$" data-code="CAD">C$ CAD (Canadian Dollar)</option>
+              <option value="A$" data-code="AUD">A$ AUD (Australian Dollar)</option>
+              <option value="د.إ" data-code="AED">د.إ AED (UAE Dirham)</option>
+              <option value="S$" data-code="SGD">S$ SGD (Singapore Dollar)</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="bill-amount">Total Bill Amount</label>
+            <div class="input-wrapper">
+              <span id="currency-symbol-display" class="currency-prefix">$</span>
+              <input
+                type="number"
+                id="bill-amount"
+                name="bill-amount"
+                class="has-prefix"
+                step="0.01"
+                min="0.01"
+                placeholder="0.00"
+                required
+              />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="num-people">Number of People</label>
+            <input
+              type="number"
+              id="num-people"
+              name="num-people"
+              step="1"
+              min="1"
+              max="100"
+              value="3"
+              required
+            />
+          </div>
+        </div>
+
+        <!-- Split Mode Selector -->
+        <h2 class="form-section-title">3. Participants &amp; Split Mode</h2>
+        <div class="split-mode-container" role="tablist">
+          <button
+            type="button"
+            id="mode-equal-btn"
+            class="mode-tab-btn active"
+            role="tab"
+            aria-selected="true"
+          >
+            Standard Equal Split (Exact Penny Allocation)
+          </button>
+          <button
+            type="button"
+            id="mode-custom-btn"
+            class="mode-tab-btn"
+            role="tab"
+            aria-selected="false"
+          >
+            Custom Amounts (If Anyone Pays Less / Different)
+          </button>
+        </div>
+
+        <!-- Participants Dynamic List -->
+        <div class="people-names-panel">
+          <div class="people-names-header">
+            <span class="people-names-title">Participant Profiles &amp; Avatar Circles</span>
+            <div class="people-count-controls">
+              <span style="font-size: 0.85rem; color: var(--text-muted);">Party Count:</span>
+              <button type="button" id="btn-dec-people" class="btn-counter" title="Remove person">&minus;</button>
+              <button type="button" id="btn-inc-people" class="btn-counter" title="Add person">&plus;</button>
+            </div>
+          </div>
+
+          <div id="people-inputs-container" class="people-inputs-grid">
+            <!-- Dynamically populated person name and custom amount inputs with avatar circles -->
+          </div>
+
+          <div id="custom-distribution-tools" class="custom-helper-note hidden">
+            <span>Someone paying less? Enter their exact amount above, then balance the rest:</span>
+            <button type="button" id="btn-balance-remaining" class="btn-text-link">
+              Distribute Remaining Bill Evenly Among Others
+            </button>
+          </div>
+        </div>
+
+        <div class="actions-row">
+          <button type="button" id="split-btn" class="btn-primary">Calculate Split</button>
+          <button type="button" id="save-bill-btn" class="btn-success">Save Bill</button>
+          <button type="button" id="reset-btn" class="btn-secondary">Reset</button>
+        </div>
+      </form>
+
+      <!-- Alert Box for Validation Errors & Notices -->
+      <div id="alert-box" class="alert-box alert-error hidden" role="alert">
+        <span class="alert-icon" aria-hidden="true">&#9888;</span>
+        <span id="alert-text"></span>
+      </div>
+
+      <!-- Results Section (Visible only when valid calculation is produced) -->
+      <section id="results-section" class="results-section hidden" aria-live="polite">
+        <div class="results-header">
+          <h2 class="results-title">Settlement Breakdown</h2>
+          <span id="occasion-display" class="occasion-display-badge"></span>
+        </div>
+        <div id="venue-meta-display" class="venue-meta-tag"></div>
+
+        <div class="bill-summary-card">
+          <div class="summary-item">
+            <span class="summary-label">Total Bill</span>
+            <span id="summary-bill" class="summary-value">$0.00</span>
+          </div>
+          <div class="summary-item">
+            <span class="summary-label">Party Size</span>
+            <span id="summary-people" class="summary-value">0 people</span>
+          </div>
+          <div class="summary-item">
+            <span class="summary-label">Split Type</span>
+            <span id="summary-split-type" class="summary-value" style="font-size: 1.1rem;">Equal</span>
+          </div>
+          <div class="summary-item">
+            <span class="summary-label">Base / Avg Share</span>
+            <span id="summary-base-share" class="summary-value">$0.00</span>
+          </div>
+        </div>
+
+        <!-- Overlapping Circles Series: Visual stack of rounding circles showing how splitters increase and their shares -->
+        <div class="series-overview-card">
+          <div class="series-overview-header">
+            <span class="series-overview-title">Splitters Series &amp; Allocation</span>
+            <span id="series-count-label" style="font-size: 0.85rem; color: var(--text-muted);"></span>
+          </div>
+          <div class="stacked-avatars-row">
+            <div id="stacked-avatars-container" class="stacked-avatars-group">
+              <!-- Overlapping avatar circles series -->
+            </div>
+          </div>
+          <div id="splitters-series-container" class="splitters-series-grid">
+            <!-- Individual splitter chip cards with avatar, name, and split amount -->
+          </div>
+        </div>
+
+        <div class="shares-table-container">
+          <h3 class="table-heading">Individual Payment Responsibilities</h3>
+          <table class="shares-table">
+            <thead>
+              <tr>
+                <th scope="col">Participant</th>
+                <th scope="col">Share Breakdown / Status</th>
+                <th scope="col" class="text-right">Share to Pay</th>
+              </tr>
+            </thead>
+            <tbody id="shares-list-body">
+              <!-- Dynamically populated rows with avatar circles and names -->
+            </tbody>
+            <tfoot>
+              <tr>
+                <td colspan="2" style="font-weight: 600; padding: 0.9rem 0.65rem;">
+                  Total Amount Collected (Sum of Shares)
+                </td>
+                <td id="total-shares-sum" class="person-share-amount text-right" style="padding: 0.9rem 0.65rem;">
+                  $0.00
+                </td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+
+        <div id="verification-card" class="exact-verification">
+          <span id="verification-text">&#10003; Verification: Shares add up exactly to the bill amount.</span>
+        </div>
+
+        <p id="remainder-explanation" class="verification-note"></p>
+
+        <!-- Result Action Bar: Download, Print, Save -->
+        <div class="results-actions-bar">
+          <button type="button" id="download-bill-btn" class="btn-primary" style="flex: 1;">
+            &#128190; Download Bill Receipt (.txt)
+          </button>
+          <button type="button" id="save-current-result-btn" class="btn-success">
+            Save This Bill
+          </button>
+          <button type="button" id="print-bill-btn" class="btn-secondary">
+            &#128438; Print / PDF
+          </button>
+        </div>
+      </section>
+
+      <footer>
+        <p>Bills Buddy &bull; 100% Offline Capable &bull; Data securely saved in browser &bull; Exact penny balance</p>
+      </footer>
+    </main>
+
+    <!-- Saved Bills Modal / Drawer -->
+    <div id="saved-bills-modal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 id="modal-title" class="modal-title">Bills Buddy History</h2>
+          <button type="button" id="close-saved-modal-btn" class="btn-close-modal" aria-label="Close modal">&times;</button>
+        </div>
+        <div id="saved-bills-list" class="modal-body">
+          <!-- Populated with saved bills cards featuring avatar circles and split amounts -->
+        </div>
+        <div class="modal-footer">
+          <button type="button" id="clear-all-saved-btn" class="btn-secondary" style="color: var(--error-text); border-color: var(--error-border);">
+            Clear All History
+          </button>
+          <button type="button" id="close-modal-footer-btn" class="btn-primary">
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Connected Vanilla JavaScript -->
+    <script type="module" src="/script.js"></script>
+  </body>
+</html>

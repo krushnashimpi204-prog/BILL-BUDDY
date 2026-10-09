@@ -1,0 +1,6 @@
+{
+  "name": "Fast Bill Splitter",
+  "description": "Minimalist dinner and group bill splitter with exact penny allocation and session persistence.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

@@ -1,0 +1,25 @@
+{
+  "id": "/",
+  "name": "Bills Buddy",
+  "short_name": "BillsBuddy",
+  "description": "Your offline companion to settle up dinner and group bills with exact penny balance and custom shares.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#f5f7fa",
+  "theme_color": "#3b6989",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect width='192' height='192' rx='36' fill='%233b6989'/%3E%3Ccircle cx='70' cy='80' r='28' fill='%23ffffff' opacity='0.9'/%3E%3Ccircle cx='122' cy='80' r='28' fill='%23d0e2ec' opacity='0.9'/%3E%3Ctext x='96' y='148' font-family='Times New Roman, serif' font-size='32' font-weight='bold' fill='%23ffffff' text-anchor='middle'%3EBB%3C/text%3E%3C/svg%3E",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='96' fill='%233b6989'/%3E%3Ccircle cx='190' cy='210' r='80' fill='%23ffffff' opacity='0.9'/%3E%3Ccircle cx='322' cy='210' r='80' fill='%23d0e2ec' opacity='0.9'/%3E%3Ctext x='256' y='390' font-family='Times New Roman, serif' font-size='84' font-weight='bold' fill='%23ffffff' text-anchor='middle'%3EBB%3C/text%3E%3C/svg%3E",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
